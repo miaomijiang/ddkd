@@ -1,0 +1,4 @@
+distill1202/
+logs/
+*.log
+__pycache__/
