@@ -1,0 +1,23 @@
+# configs/cifar10.yaml
+_base_: "default.yaml"
+
+project:
+  experiment_name: "cifar10_resnet34_distillation"  # 修改实验名称
+
+dataset:
+  name: "cifar10"
+  num_classes: 10
+
+data_distillation:
+  ipc: 10000
+  synthesis_steps: 200  # 可以适当减少以节省时间
+
+teacher:
+  name: "resnet34"  # 改为更大的模型
+  pretrained: false
+
+student:
+  name: "resnet18"  # 学生模型保持不变
+
+training:
+  epochs: 500

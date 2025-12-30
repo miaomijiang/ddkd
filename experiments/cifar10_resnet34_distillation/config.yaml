@@ -1,0 +1,48 @@
+data_distillation:
+  enabled: false
+  init_method: real
+  inner_loop: 1
+  ipc: 10000
+  lr_net: 0.01
+  lr_syn: 0.1
+  synthesis_steps: 200
+dataset:
+  batch_size: 64
+  data_dir: ./data
+  download: true
+  name: cifar10
+  num_classes: 10
+  num_workers: 2
+  source: torchvision
+evaluation:
+  checkpoint_frequency: 10
+  metrics:
+  - top1
+  - top5
+  - inference_time
+  - model_size
+  save_checkpoints: true
+knowledge_distillation:
+  alpha: 0.7
+  beta: 0.3
+  temperature: 4.0
+  use_feature_distillation: false
+project:
+  device: cuda
+  experiment_name: cifar10_resnet34_distillation
+  name: data_distillation_kd
+  seed: 42
+student:
+  name: resnet18
+  pretrained: false
+teacher:
+  checkpoint: ''
+  name: resnet34
+  pretrained: false
+training:
+  epochs: 300
+  learning_rate: 0.01
+  momentum: 0.9
+  optimizer: sgd
+  scheduler: cosine
+  weight_decay: 0.0005

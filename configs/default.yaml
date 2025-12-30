@@ -1,0 +1,59 @@
+# 项目配置
+project:
+  name: "data_distillation_kd"
+  experiment_name: "default_experiment"
+  seed: 42
+  device: "cuda"  # 自动检测
+
+# 数据集配置
+dataset:
+  name: "cifar10"           # cifar10, cifar100, mnist
+  source: "torchvision"
+  data_dir: "./data"
+  download: true
+  batch_size: 64
+  num_workers: 2
+  image_size: 224  # 图像大小
+#  split_ratio: 0.8  # 训练集比例，自定义数据集需要配置
+
+# 数据蒸馏配置（梯度匹配）
+data_distillation:
+  enabled: true
+  ipc: 20                   # Images Per Class，每类合成图像数
+  synthesis_steps: 500      # 梯度匹配步数
+  lr_syn: 0.1               # 合成数据学习率
+  lr_net: 0.01              # 网络学习率
+  inner_loop: 1             # 内循环步数
+  init_method: "real"       # 初始化方法: real, random
+
+# 模型配置
+teacher:
+  name: "resnet34"
+  pretrained: false
+  checkpoint: ""            # 预训练权重路径
+
+student:
+  name: "resnet18"
+  pretrained: false
+
+# 知识蒸馏配置
+knowledge_distillation:
+  temperature: 4.0
+  alpha: 0.7               # 蒸馏损失权重
+  beta: 0.3                # 交叉熵损失权重
+  use_feature_distillation: false
+
+# 训练配置
+training:
+  epochs: 500
+  learning_rate: 0.01
+  weight_decay: 0.0005
+  optimizer: "sgd"          # sgd, adam
+  scheduler: "cosine"       # cosine, step
+  momentum: 0.9
+
+# 评估配置
+evaluation:
+  metrics: ["top1", "top5", "inference_time", "model_size"]
+  save_checkpoints: true
+  checkpoint_frequency: 10
